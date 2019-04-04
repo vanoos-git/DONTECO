@@ -26,9 +26,10 @@ $('#search').on('click', function(){
         date += ' ' + tomorrow.getDate() + '/' + (tomorrow.getMonth() + 1) + '/' + tomorrow.getFullYear();
         if (index == 0) {
           wf += "<div class=\"bg-primary text-light \">";
+          wf += "<div class=\"bg-dark bl\">"
           wf += "<h1>Today</h1>";
           wf += crtWeather(date, val);
-          wf += "</div>";
+          wf += "</div></div>";
         } else {
           wf += crtWeather(date, val);
         }
