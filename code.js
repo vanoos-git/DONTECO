@@ -17,21 +17,30 @@ $(document).ready(function() {
       var today=new Date();
       var tomorrow=new Date();
       var week=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-      console.log('Received data:', data) // For testing
       var wf = "";
-      wf += "<h2>" + data.city.name + "</h2>"; // City (displays once)
+      wf += "<h2>" + data.city.name + "</h2>";
+      console.log(data);
       $.each(data.list, function(index, val) {
-
         tomorrow.setDate(today.getDate()+index);
         var date = week[tomorrow.getDay()];
         date += ' '+tomorrow.getDate()+'/'+(tomorrow.getMonth()+1)+'/'+tomorrow.getFullYear();
-
-        wf += "<p>" // Opening paragraph tag
+        if (index==0) {
+          wf+= "<div class=\"bg-primary text-light \">";
+          wf+="<h1>Today</h2>";
+          wf += "<p>"
+          wf += "<b>Day: " + date + "</b> <br> " //
+          wf += "Temperature: "+val.main.temp + "&degC"
+          wf += "<span> | " + val.weather[0].description + "</span>";
+          wf += "<img src='https://openweathermap.org/img/w/" + val.weather[0].icon + ".png'>"
+          wf += "</p>"
+          wf+="</div>";
+        }
+        wf += "<p>"
         wf += "<b>Day: " + date + "</b> <br> " //
-        wf += "Temperature: "+val.main.temp + "&degC" // Temperature
-        wf += "<span> | " + val.weather[0].description + "</span>"; // Description
-        wf += "<img src='https://openweathermap.org/img/w/" + val.weather[0].icon + ".png'>" // Icon
-        wf += "</p>" // Closing paragraph tag
+        wf += "Temperature: "+val.main.temp + "&degC"
+        wf += "<span> | " + val.weather[0].description + "</span>";
+        wf += "<img src='https://openweathermap.org/img/w/" + val.weather[0].icon + ".png'>"
+        wf += "</p>"
       });
       $(".weather").html(wf);
     }
