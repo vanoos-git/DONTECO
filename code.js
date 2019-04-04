@@ -35,14 +35,15 @@ $(document).ready(function() {
           wf += "</p>"
           wf+="</div>";
         }
-        wf += "<p>"
-        wf += "<b>Day: " + date + "</b> <br> " //
-        wf += "Temperature: "+val.main.temp + "&degC"
-        wf += "<span> | " + val.weather[0].description + "</span>";
-        wf += "<img src='https://openweathermap.org/img/w/" + val.weather[0].icon + ".png'>"
-        wf += "</p>"
-      });
-      $(".weather").html(wf);
-    }
+        else{
+          wf += "<p>"
+          wf += "<b>Day: " + date + "</b> <br> " //
+          wf += "Temperature: "+val.main.temp + "&degC"
+          wf += "<span> | " + val.weather[0].description + "</span>";
+          wf += "<img src='https://openweathermap.org/img/w/" + val.weather[0].icon + ".png'>"
+          wf += "</p>"}
+        });
+        $(".weather").html(wf);
+      }
+    });
   });
-});
