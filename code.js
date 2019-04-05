@@ -4,6 +4,7 @@ $('#search').on('click', function(){
   var url = "https://api.openweathermap.org/data/2.5/forecast";
   $.ajax({
     url: url,
+    timeout: 60000,
     dataType: "json",
     type: "GET",
     data: {
@@ -35,6 +36,9 @@ $('#search').on('click', function(){
         }
       });
       $(".weather").html(wf);
+    },
+    error: function(e) {
+      alert("Erorr, try again later")
     }
   });
 });
