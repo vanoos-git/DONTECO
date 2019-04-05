@@ -38,7 +38,13 @@ $('#search').on('click', function(){
       $(".weather").html(wf);
     },
     error: function(e) {
-      alert("Erorr, try again later")
+      console.log(e);
+      switch (e.status) {
+        case 404:  alert(e.responseJSON.message); break;
+        case 0: alert("Something wrong"); break;
+        default:
+
+      }
     }
   });
 });
