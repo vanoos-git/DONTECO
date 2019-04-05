@@ -1,3 +1,4 @@
+
 $('#search').on('click', function(){
   var city= $("#info").val();
   var id = "e562e9a40d2793a5497a96952ef7e91b";
@@ -17,25 +18,28 @@ $('#search').on('click', function(){
       var today = new Date();
       var tomorrow = new Date();
       var week = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-      var wf = "";
-      $(".weather").html(wf);
-      wf += "<h2>" + data.city.name + "</h2>";
-      console.log(data);
+      $("#weather").html(" ");
+      var cityName = document.createElement("h2");
+      cityName.innerHTML= data.city.name;
+      $("#weather").append(cityName);
       $.each(data.list, function(index, val) {
         tomorrow.setDate(today.getDate() + index);
         var date = week[tomorrow.getDay()];
         date += ' ' + tomorrow.getDate() + '/' + (tomorrow.getMonth() + 1) + '/' + tomorrow.getFullYear();
+
         if (index == 0) {
-          wf += "<div class=\"bg-primary text-light \">";
-          wf += "<div class=\"bg-dark bl\">";
-          wf += "<h1>Today</h1>";
-          wf += crtWeather(date, val);
-          wf += "</div></div>";
-        } else {
-          wf += crtWeather(date, val);
+          var outBlock = document.createElement("div");
+          var inBlock = document.createElement("div");
+          $(outBlock).addClass("bg-primary text-light");
+          $(inBlock).addClass("bg-dark bl").append("<h1>Today</h1>");
+          $(inBlock).append(crtWeather(date, val));
+          $(outBlock).append(inBlock);
+          $("#weather").append(outBlock);
+        }
+        else {
+          $("#weather").append(crtWeather(date, val));
         }
       });
-      $(".weather").html(wf);
     },
     error: function(e) {
       console.log(e);
@@ -57,11 +61,9 @@ $('#info').keypress(function (e) {
 });
 
 function crtWeather(date, val) {
-  var html = "<p>";
-  html += "<b>" + date + "</b> <br> ";
-  html += "Temperature: " + val.main.temp + "&degC";
-  html += "<span> | " + val.weather[0].description + "</span>";
-  html += "<img src='https://openweathermap.org/img/w/" + val.weather[0].icon + ".png'>";
-  html += "</p>";
-  return html;
+  var pelem = document.createElement("p");
+  $(pelem).append("<b>" + date + "</b><br>");
+  $(pelem).append("<span> Temperature: " + val.main.temp + "&degC | " + val.weather[0].description + "</span>");
+  $(pelem).append("<img src='https://openweathermap.org/img/w/" + val.weather[0].icon + ".png'>");
+  return pelem;
 }
