@@ -26,7 +26,7 @@ $('#search').on('click', function(){
         date += ' ' + tomorrow.getDate() + '/' + (tomorrow.getMonth() + 1) + '/' + tomorrow.getFullYear();
         if (index == 0) {
           wf += "<div class=\"bg-primary text-light \">";
-          wf += "<div class=\"bg-dark bl\">"
+          wf += "<div class=\"bg-dark bl\">";
           wf += "<h1>Today</h1>";
           wf += crtWeather(date, val);
           wf += "</div></div>";
@@ -47,11 +47,11 @@ $('#info').keypress(function (e) {
 });
 
 function crtWeather(date, val) {
-  var html = "<p>"
-  html += "<b>" + date + "</b> <br> " //
-  html += "Temperature: " + val.main.temp + "&degC"
+  var html = "<p>";
+  html += "<b>" + date + "</b> <br> ";
+  html += "Temperature: " + val.main.temp + "&degC";
   html += "<span> | " + val.weather[0].description + "</span>";
-  html += "<img src='https://openweathermap.org/img/w/" + val.weather[0].icon + ".png'>"
-  html += "</p>"
+  html += "<img src='https://openweathermap.org/img/w/" + val.weather[0].icon + ".png'>";
+  html += "</p>";
   return html;
 }
