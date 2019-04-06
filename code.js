@@ -8,10 +8,10 @@ $('#search').on('click', function(){
   while (time >= x) {
     x+=3;
   }
-  y=24-x;
+  y=24-x-3;
   y=y/3;
   y++;
-  var count = 24+ y;
+  var count = 24 + y;
 
   $.ajax({
     url: url,
@@ -25,6 +25,8 @@ $('#search').on('click', function(){
       cnt: count
     },
     success: function(data) {
+
+      console.log(data);
       for (var i=0;i<y;i++){
         delete data.list[i];
       }
@@ -43,30 +45,31 @@ $('#search').on('click', function(){
       var desc = "";
       var iTemp = 0;
 
-      var firstValue = data.list[0].dt_txt.split(" ")[0];
+      var firstValue = data.list[0].dt;
       $.each(data.list, function( index, value ) {
         //GET DAY OT THE WEEK
         tomorrow.setDate(today.getDate() + index);
         var date = week[tomorrow.getDay()];
         //END GET OF THE WEEK
-        var dday = value.dt_txt.split(" ");
+        var dday = value.dt;
 
-        iTemp+=value.main.temp;
-        //console.log(value.main.temp);
-        if (dday[1] === "12:00:00")
+        iTemp+=value.main.temp_max;
+
+        var curDat = new Date(dday*1000);
+        if (curDat.getHours() === 12)
         {
+          console.log(curDat.getHours());
           pic = "https://openweathermap.org/img/w/" + value.weather[0].icon + ".png" ;
           desc = value.weather[0].description;
         }
         var inn = index+1;
-        console.log(inn);
         if (inn !== 24){
-          firstValue = data.list[inn].dt_txt.split(" ")[0];
+          firstValue = data.list[inn].dt;
         }
-        if (firstValue !== dday[0] || index === 23)
+        if (myDate(firstValue) !== myDate(dday) || index === 23)
         {
-          console.log(iTemp);
-          list.push({"day": date + " " + dday[0], "temp": (iTemp/8).toFixed(2), "description": desc, "icon": pic});
+
+          list.push({"day": date + " " + fullDate(curDat), "temp": (iTemp/8).toFixed(2), "description": desc, "icon": pic});
           iTemp=0;
         }
       });
@@ -103,3 +106,12 @@ $('#info').keypress(function (e) {
     return false;
   }
 });
+
+function myDate(tmp){
+  var tempdate = new Date(tmp*1000)
+  return tempdate.getDate();
+}
+
+function fullDate(curDate){
+    return curDate.getDate() + "/" + curDate.getMonth() + "/" + curDate.getFullYear();
+}
