@@ -37,9 +37,7 @@ $('#search').on('click', function(){
       cityName.id = "cname";
       $("#weather").html('<weather-post v-for="item in jlist" v-bind:item="item">  </weather-post>');
       $("#cname").remove();
-      
       $("#weather").prepend(cityName);
-
       var list = [];
       var pic = "";
       var desc = "";
@@ -52,18 +50,25 @@ $('#search').on('click', function(){
         var date = week[tomorrow.getDay()];
         //END GET OF THE WEEK
         var dday = value.dt_txt.split(" ");
-        if (firstValue !== dday[0] || index === 23)
-        {
-          list.push({"day": date + " " + firstValue, "temp": (iTemp/8).toFixed(2), "description": desc, "icon": pic});
-          iTemp=0;
-        }
+
         iTemp+=value.main.temp;
+        //console.log(value.main.temp);
         if (dday[1] === "12:00:00")
         {
           pic = "https://openweathermap.org/img/w/" + value.weather[0].icon + ".png" ;
           desc = value.weather[0].description;
         }
-        firstValue = data.list[index].dt_txt.split(" ")[0];
+        var inn = index+1;
+        console.log(inn);
+        if (inn !== 24){
+          firstValue = data.list[inn].dt_txt.split(" ")[0];
+        }
+        if (firstValue !== dday[0] || index === 23)
+        {
+          console.log(iTemp);
+          list.push({"day": date + " " + firstValue, "temp": (iTemp/8).toFixed(2), "description": desc, "icon": pic});
+          iTemp=0;
+        }
       });
       //VUE
       Vue.component('weather-post', { props: ['item'],template: '<li class="weather-post"><b>{{item.day}}</b><br> <span> Temperature: {{item.temp}} &degC |  {{item.description}}</span> <img :src="item.icon"/> </li>'
