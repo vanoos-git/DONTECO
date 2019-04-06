@@ -34,6 +34,10 @@ $('#search').on('click', function(){
       var week = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
       var cityName = document.createElement("h2");
       cityName.innerHTML= data.city.name;
+      cityName.id = "cname";
+      $("#weather").html('<weather-post v-for="item in jlist" v-bind:item="item">  </weather-post>');
+      $("#cname").remove();
+      
       $("#weather").prepend(cityName);
 
       var list = [];
@@ -61,7 +65,7 @@ $('#search').on('click', function(){
         }
         firstValue = data.list[index].dt_txt.split(" ")[0];
       });
-//VUE
+      //VUE
       Vue.component('weather-post', { props: ['item'],template: '<li class="weather-post"><b>{{item.day}}</b><br> <span> Temperature: {{item.temp}} &degC |  {{item.description}}</span> <img :src="item.icon"/> </li>'
     });
 
@@ -69,7 +73,7 @@ $('#search').on('click', function(){
       el: '#weather',
       data: { jlist : list }
     });
-//END VIE
+    //END VIE
 
 
 
