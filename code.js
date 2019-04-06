@@ -66,7 +66,7 @@ $('#search').on('click', function(){
         if (firstValue !== dday[0] || index === 23)
         {
           console.log(iTemp);
-          list.push({"day": date + " " + firstValue, "temp": (iTemp/8).toFixed(2), "description": desc, "icon": pic});
+          list.push({"day": date + " " + dday[0], "temp": (iTemp/8).toFixed(2), "description": desc, "icon": pic});
           iTemp=0;
         }
       });
