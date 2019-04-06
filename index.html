@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
   <script defer src="code.js" charset="utf-8"></script>
   <link rel="stylesheet" href="main.css">
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
@@ -16,8 +17,21 @@
     <div class="column">
       <input id="info" type="text" value="Rostov-On-Don">
       <input class="mt-2" id="search" type="submit" value="Search">
-    </div>
-    <div id="weather"></div>
-  </div>
+
+
+      <div id="weather">
+        <weather-post v-for="item in jlist"
+        v-bind:item="item">
+      </weather-post>
+      <!--<ul>
+      <li v-for='item in jlist'>
+      <b>{{item.day}}</b>
+      <span> Temperature: {{item.temp}} &degC |  {{item.description}}</span>
+      <img v-bind:src="'https://openweathermap.org/img/w/' + item.icon + '.png'" />
+    </li>
+  </ul>-->
+</div>
+</div>
+</div>
 </body>
 </html>

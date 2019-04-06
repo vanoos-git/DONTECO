@@ -3,7 +3,7 @@
   width: 50vw;
   margin-left: auto;
   margin-right: auto;
-
+  align-items: center;
 }
 
 .bl{
@@ -14,11 +14,17 @@
   max-width: 90%;
   height: auto;
   width: 50vw;
-  border-radius: 20px;  
+  border-radius: 20px;
 }
 
 @media only screen and (min-width: 320px) and (max-width: 768px) {
   .bl{
     width: 100%;
   }
+}
+
+
+li {
+  list-style: none;
+
 }

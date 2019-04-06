@@ -1,8 +1,18 @@
-
 $('#search').on('click', function(){
   var city= $("#info").val();
   var id = "e562e9a40d2793a5497a96952ef7e91b";
-  var url = "https://api.openweathermap.org/data/2.5/forecast";
+  var url = "https://api.openweathermap.org/data/2.5/forecast/";
+  var today = new Date();
+  var time = today.getHours();
+  var x = 0;
+  while (time >= x) {
+    x+=3;
+  }
+  y=24-x;
+  y=y/3;
+  y++;
+  var count = 24+ y;
+
   $.ajax({
     url: url,
     timeout: 60000,
@@ -12,45 +22,70 @@ $('#search').on('click', function(){
       q: city,
       appid: id,
       units: "metric",
-      cnt: "4"
+      cnt: count
     },
     success: function(data) {
+      for (var i=0;i<y;i++){
+        delete data.list[i];
+      }
+      data.list.splice(0,y);
       var today = new Date();
       var tomorrow = new Date();
       var week = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-      $("#weather").html(" ");
       var cityName = document.createElement("h2");
       cityName.innerHTML= data.city.name;
-      $("#weather").append(cityName);
-      $.each(data.list, function(index, val) {
+      $("#weather").prepend(cityName);
+
+      var list = [];
+      var pic = "";
+      var desc = "";
+      var iTemp = 0;
+
+      var firstValue = data.list[0].dt_txt.split(" ")[0];
+      $.each(data.list, function( index, value ) {
+        //GET DAY OT THE WEEK
         tomorrow.setDate(today.getDate() + index);
         var date = week[tomorrow.getDay()];
-        date += ' ' + tomorrow.getDate() + '/' + (tomorrow.getMonth() + 1) + '/' + tomorrow.getFullYear();
-
-        if (index == 0) {
-          var outBlock = document.createElement("div");
-          var inBlock = document.createElement("div");
-          $(outBlock).addClass("bg-primary text-light");
-          $(inBlock).addClass("bg-dark bl").append("<h1>Today</h1>");
-          $(inBlock).append(crtWeather(date, val));
-          $(outBlock).append(inBlock);
-          $("#weather").append(outBlock);
+        //END GET OF THE WEEK
+        var dday = value.dt_txt.split(" ");
+        if (firstValue !== dday[0] || index === 23)
+        {
+          list.push({"day": date + " " + firstValue, "temp": (iTemp/8).toFixed(2), "description": desc, "icon": pic});
+          iTemp=0;
         }
-        else {
-          $("#weather").append(crtWeather(date, val));
+        iTemp+=value.main.temp;
+        if (dday[1] === "12:00:00")
+        {
+          pic = "https://openweathermap.org/img/w/" + value.weather[0].icon + ".png" ;
+          desc = value.weather[0].description;
         }
+        firstValue = data.list[index].dt_txt.split(" ")[0];
       });
-    },
-    error: function(e) {
-      console.log(e);
-      switch (e.status) {
-        case 404:  alert(e.responseJSON.message); break;
-        case 0: alert("Something wrong"); break;
-        default:
+//VUE
+      Vue.component('weather-post', { props: ['item'],template: '<li class="weather-post"><b>{{item.day}}</b><br> <span> Temperature: {{item.temp}} &degC |  {{item.description}}</span> <img :src="item.icon"/> </li>'
+    });
 
-      }
+    new Vue({
+      el: '#weather',
+      data: { jlist : list }
+    });
+//END VIE
+
+
+
+
+
+  },
+  error: function(e) {
+    console.log(e);
+    switch (e.status) {
+      case 404:  alert(e.responseJSON.message); break;
+      default:
+      alert("Something wrong")
+
     }
-  });
+  }
+});
 });
 
 $('#info').keypress(function (e) {
@@ -59,11 +94,3 @@ $('#info').keypress(function (e) {
     return false;
   }
 });
-
-function crtWeather(date, val) {
-  var pelem = document.createElement("p");
-  $(pelem).append("<b>" + date + "</b><br>");
-  $(pelem).append("<span> Temperature: " + val.main.temp + "&degC | " + val.weather[0].description + "</span>");
-  $(pelem).append("<img src='https://openweathermap.org/img/w/" + val.weather[0].icon + ".png'>");
-  return pelem;
-}
