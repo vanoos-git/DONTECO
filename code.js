@@ -31,7 +31,7 @@ $('#search').on('click', function(){
         delete data.list[i];
       }
       data.list.splice(0,y);
-      var today = new Date();
+
       var tomorrow = new Date();
       var week = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
       var cityName = document.createElement("h2");
@@ -47,15 +47,14 @@ $('#search').on('click', function(){
 
       var firstValue = data.list[0].dt;
       $.each(data.list, function( index, value ) {
-        //GET DAY OT THE WEEK
-        tomorrow.setDate(today.getDate() + index);
-        var date = week[tomorrow.getDay()];
-        //END GET OF THE WEEK
+
         var dday = value.dt;
 
         iTemp+=value.main.temp_max;
 
         var curDat = new Date(dday*1000);
+        tomorrow.setDate(curDat.getDate());
+        var date = week[tomorrow.getDay()];
         if (curDat.getHours() === 12)
         {
           console.log(curDat.getHours());
